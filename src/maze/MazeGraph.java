@@ -2,10 +2,10 @@ package maze;
 
 public class MazeGraph {
 
-	private final int vertices;
+	private static int vertices;
 	private final int vertical;
 	private final int horizontal;
-    private int[][] adj_matrix;
+    private static int[][] adj_matrix;
  
     public MazeGraph(int v, int h) 
     {
@@ -42,4 +42,21 @@ public class MazeGraph {
         return -1;
     }
 	
+    public static void printAllEdges()
+    {
+    	for (int i = 0; i <= vertices; i++) //for every vertex
+    	{
+    		
+    		for (int j = 0; j <= vertices; j++){
+    			
+    			if (adj_matrix[j][i] == 1){
+    				System.out.println("There is an Edge from Vertex (" 
+    						+ Integer.toString(i) + ") to Vertex (" + Integer.toString(j) + ")");		
+    			}
+    			
+    		}
+    	
+    	}
+    }
+    
 }

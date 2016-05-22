@@ -266,6 +266,10 @@ public class Main {
 			System.out.println("Something went wrong");
 		}
 	
+		//Print out all Edges
+		System.out.println("\nPrinting all Edges:");
+		MazeGraph.printAllEdges();
+		
 	} // main
 	
 } //Main class 
