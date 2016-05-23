@@ -1,5 +1,11 @@
 package maze;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
+
 public class MazeGraph {
 
 	private static int vertices;
@@ -59,4 +65,83 @@ public class MazeGraph {
     	}
     }
     
+    public static void depthFirstPrint(MazeGraph g, int start)
+    {
+       Integer[ ] marked = new Integer[vertices + 1];
+       
+       //a stack to store the path we determine best.
+       Stack<Integer> perfect_path = new Stack<Integer>();
+       
+       depthFirstRecurse(g, start, marked, perfect_path);
+       
+       while (!perfect_path.isEmpty()){
+    	   Integer displayval = perfect_path.pop();
+    	   System.out.print(displayval + " -> ");
+       }
+       
+    }
+    
+    public static void depthFirstRecurse(MazeGraph g, int v, Integer[ ] marked, Stack<Integer> perfect_path)
+    {
+       int[ ] connections = g.neighbors(v);
+       int i;
+       
+       perfect_path.push(v);
+       
+       Integer nextNeighbor;
+       
+       marked[v] = 1;
+       
+       
+       // Traverse all the neighbors, looking for unmarked vertices:
+       for (i = 0; i < connections.length; i++)
+       {
+          nextNeighbor = connections[i];
+          if ((marked[nextNeighbor] == null))
+          {  
+        	  depthFirstRecurse(g, nextNeighbor, marked, perfect_path);
+          }
+
+       } 
+    }    
+
+    
+    /**
+     * Determine number of vertices in this Graph.
+     * @param - none
+     * @return
+     *   the number of vertices in Graph
+     **/ 
+
+    public int size( )
+    {
+       return vertices;
+    }
+    
+    public int[] neighbors(int vertex)
+    {
+    	int[] nResult;
+        
+    	int i;
+    	int count;
+
+    	count = 0;
+    	
+    	for (i = 0; i < vertices; i++)
+    	{
+    		if (adj_matrix[vertex][i] == 1)
+    			count++;
+    	}
+
+    	nResult = new int[count];
+    	
+    	count = 0;
+    	for (i = 0; i < vertices; i++)
+    	{
+    		if (adj_matrix[vertex][i] == 1)
+    			nResult[count++] = i;
+    	}
+
+    	return nResult;
+    }
 }

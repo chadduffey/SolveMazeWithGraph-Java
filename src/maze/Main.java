@@ -270,6 +270,15 @@ public class Main {
 		System.out.println("\nPrinting all Edges:");
 		MazeGraph.printAllEdges();
 		
+		//Test neighbors.
+		//take out of final.
+		//int[] test_n = graph.neighbors(6);
+		//for (int i = 0; i < test_n.length; i++)
+		//	System.out.println(test_n[i]); 
+		
+		//Test Depth First Print
+		MazeGraph.depthFirstPrint(graph, 1);
+		
 	} // main
 	
 } //Main class 
