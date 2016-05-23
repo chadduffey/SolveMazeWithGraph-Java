@@ -1,17 +1,13 @@
 package maze;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
-
 public class MazeGraph {
 
 	private static int vertices;
 	private final int vertical;
 	private final int horizontal;
     private static int[][] adj_matrix;
+    
+    private static int path_found;
  
     public MazeGraph(int v, int h) 
     {
@@ -68,41 +64,42 @@ public class MazeGraph {
     public static void depthFirstPrint(MazeGraph g, int start)
     {
        Integer[ ] marked = new Integer[vertices + 1];
-       
-       //a stack to store the path we determine best.
-       Stack<Integer> perfect_path = new Stack<Integer>();
-       
-       depthFirstRecurse(g, start, marked, perfect_path);
-       
-       while (!perfect_path.isEmpty()){
-    	   Integer displayval = perfect_path.pop();
-    	   System.out.print(displayval + " -> ");
-       }
-       
+
+       depthFirstRecurse(g, start, marked);
+  
     }
     
-    public static void depthFirstRecurse(MazeGraph g, int v, Integer[ ] marked, Stack<Integer> perfect_path)
+    public static void depthFirstRecurse(MazeGraph g, int v, Integer[ ] marked)
     {
-       int[ ] connections = g.neighbors(v);
-       int i;
-       
-       perfect_path.push(v);
-       
-       Integer nextNeighbor;
-       
-       marked[v] = 1;
-       
-       
-       // Traverse all the neighbors, looking for unmarked vertices:
-       for (i = 0; i < connections.length; i++)
-       {
-          nextNeighbor = connections[i];
-          if ((marked[nextNeighbor] == null))
-          {  
-        	  depthFirstRecurse(g, nextNeighbor, marked, perfect_path);
-          }
+    	
+    	int[ ] connections = g.neighbors(v);
+    	int i;
 
-       } 
+    	Integer nextNeighbor;
+
+    	marked[v] = 1;
+
+    	if (v < vertices)
+    		System.out.print(v + " -> ");
+    	else
+    		System.out.print(v);
+    	
+    	if (v == vertices){
+    		path_found = 1;
+    		return;
+    	}
+
+    	// Traverse all the neighbors, looking for unmarked vertices:
+    	for (i = 0; i < connections.length; i++)
+    	{
+    		nextNeighbor = connections[i];
+    		if ((marked[nextNeighbor] == null))
+    		{  
+    			if (!(path_found == 1))
+    				depthFirstRecurse(g, nextNeighbor, marked);
+    		}
+
+    	} 
     }    
 
     
@@ -127,7 +124,7 @@ public class MazeGraph {
 
     	count = 0;
     	
-    	for (i = 0; i < vertices; i++)
+    	for (i = 0; i <= vertices; i++)
     	{
     		if (adj_matrix[vertex][i] == 1)
     			count++;
@@ -136,7 +133,7 @@ public class MazeGraph {
     	nResult = new int[count];
     	
     	count = 0;
-    	for (i = 0; i < vertices; i++)
+    	for (i = 0; i <= vertices; i++)
     	{
     		if (adj_matrix[vertex][i] == 1)
     			nResult[count++] = i;

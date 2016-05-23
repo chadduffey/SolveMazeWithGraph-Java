@@ -269,14 +269,17 @@ public class Main {
 		//Print out all Edges
 		System.out.println("\nPrinting all Edges:");
 		MazeGraph.printAllEdges();
+		System.out.println();
 		
 		//Test neighbors.
 		//take out of final.
-		//int[] test_n = graph.neighbors(6);
-		//for (int i = 0; i < test_n.length; i++)
-		//	System.out.println(test_n[i]); 
 		
-		//Test Depth First Print
+//		int[] test_n = graph.neighbors(15);
+//		for (int i = 0; i < test_n.length; i++)
+//			System.out.println(test_n[i]); 
+		
+		//Depth First Print
+		System.out.println("A path out of the Maze: ");
 		MazeGraph.depthFirstPrint(graph, 1);
 		
 	} // main
