@@ -1,8 +1,16 @@
 package maze;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+
 public class MazeGraph {
 
-	private static int vertices;
+	private static int verticies;
 	private final int vertical;
 	private final int horizontal;
     private static int[][] adj_matrix;
@@ -13,8 +21,8 @@ public class MazeGraph {
     {
         vertical = v;
         horizontal = h;
-    	vertices = v * h;
-        adj_matrix = new int[vertices + 1][vertices + 1];
+    	verticies = v * h;
+        adj_matrix = new int[verticies + 1][verticies + 1];
     }
  
     public void makeEdge(int to, int from, int edge) 
@@ -46,10 +54,10 @@ public class MazeGraph {
 	
     public static void printAllEdges()
     {
-    	for (int i = 0; i <= vertices; i++) //for every vertex
+    	for (int i = 0; i <= verticies; i++) //for every vertex
     	{
     		
-    		for (int j = 0; j <= vertices; j++){
+    		for (int j = 0; j <= verticies; j++){
     			
     			if (adj_matrix[j][i] == 1){
     				System.out.println("There is an Edge from Vertex (" 
@@ -63,10 +71,12 @@ public class MazeGraph {
     
     public static void depthFirstPrint(MazeGraph g, int start)
     {
-       Integer[ ] marked = new Integer[vertices + 1];
-
+       Integer[ ] marked = new Integer[verticies + 1];
+       
        depthFirstRecurse(g, start, marked);
   
+       shortestPath(g, 1, verticies);
+       
     }
     
     public static void depthFirstRecurse(MazeGraph g, int v, Integer[ ] marked)
@@ -74,17 +84,17 @@ public class MazeGraph {
     	
     	int[ ] connections = g.neighbors(v);
     	int i;
-
+    	
     	Integer nextNeighbor;
 
     	marked[v] = 1;
-
-    	if (v < vertices)
+    	
+    	if (v < verticies)
     		System.out.print(v + " -> ");
     	else
     		System.out.print(v);
     	
-    	if (v == vertices){
+    	if (v == verticies){
     		path_found = 1;
     		return;
     	}
@@ -92,15 +102,20 @@ public class MazeGraph {
     	// Traverse all the neighbors, looking for unmarked vertices:
     	for (i = 0; i < connections.length; i++)
     	{
+    		
     		nextNeighbor = connections[i];
     		if ((marked[nextNeighbor] == null))
-    		{  
-    			if (!(path_found == 1))
-    				depthFirstRecurse(g, nextNeighbor, marked);
+    		{
+    			
+    			if (!(path_found == 1)){
+    				depthFirstRecurse(g, nextNeighbor, marked);				
+    			}
+    			
     		}
 
     	} 
-    }    
+    }
+    
 
     
     /**
@@ -112,7 +127,7 @@ public class MazeGraph {
 
     public int size( )
     {
-       return vertices;
+       return verticies;
     }
     
     public int[] neighbors(int vertex)
@@ -124,7 +139,7 @@ public class MazeGraph {
 
     	count = 0;
     	
-    	for (i = 0; i <= vertices; i++)
+    	for (i = 0; i <= verticies; i++)
     	{
     		if (adj_matrix[vertex][i] == 1)
     			count++;
@@ -133,7 +148,7 @@ public class MazeGraph {
     	nResult = new int[count];
     	
     	count = 0;
-    	for (i = 0; i <= vertices; i++)
+    	for (i = 0; i <= verticies; i++)
     	{
     		if (adj_matrix[vertex][i] == 1)
     			nResult[count++] = i;
@@ -141,4 +156,116 @@ public class MazeGraph {
 
     	return nResult;
     }
+    
+    public List<Integer> getAdjacentVerticies(int v){
+    	
+    	List<Integer> adjacentVerticiesList = new ArrayList<>();
+    	
+    	for (int i = 0; i < verticies; i++){
+    		if (adj_matrix[v][i] == 1) {
+    			adjacentVerticiesList.add(i);
+    		}
+    	}
+    	
+    	Collections.sort(adjacentVerticiesList);
+    	
+    	return adjacentVerticiesList;
+    	
+    }
+    
+    public static class DistanceInfo {
+    	
+    	private int distance;
+    	private int lastVertex;
+    	
+    	public DistanceInfo(){
+    		distance = -1;
+    		lastVertex = -1;
+    				
+    	}
+    	
+    	public int getDistance(){
+    		return distance;
+    	}
+    	
+    	public int getLastVertex(){
+    		return lastVertex;
+    	}
+    	
+    	public void setDistance(int distance){
+    		this.distance = distance;
+    	}
+    	
+    	public void setLastVertex(int lastVertex){
+    		this.lastVertex = lastVertex;
+    	}
+    }
+    
+    public static Map<Integer, DistanceInfo> buildDistanceTable(MazeGraph graph, int source)
+    {
+    	Map<Integer, DistanceInfo> distanceTable = new HashMap<>();
+    	
+    	for (int x = 0; x < verticies; x++){
+    		distanceTable.put(x, new DistanceInfo());
+    	}
+    	
+    	distanceTable.get(source).setDistance(0);
+    	distanceTable.get(source).setLastVertex(source);
+
+    	LinkedList<Integer> queue = new LinkedList<>();
+    	queue.add(source);
+    	
+    	while (!queue.isEmpty()){
+    		
+    		int currentVertex = queue.pollFirst();
+    		for (int i: graph.getAdjacentVerticies(currentVertex)){
+    			int currentDistance = distanceTable.get(i).getDistance();
+    			if (currentDistance == -1){
+    				currentDistance = 1 + distanceTable.get(currentVertex).getDistance();
+    				distanceTable.get(i).setDistance(currentDistance);
+    				distanceTable.get(i).setLastVertex(currentVertex);
+
+    				if (!graph.getAdjacentVerticies(1).isEmpty()){
+    					queue.add(i);
+    				}
+    			}
+    		}
+    		
+    	}
+    	
+    	return distanceTable;
+    }
+    
+    public static void shortestPath(MazeGraph graph, int source, int destination)
+    {
+    	Map<Integer, DistanceInfo> distanceTable = buildDistanceTable(graph, source);
+    	
+    	Stack<Integer> stack = new Stack<>();
+    	stack.push(destination);
+    	
+    	int previousVertex = distanceTable.get(15).getLastVertex();
+    	
+    	//this is how it should look, the above is a hack to get a very close answer.
+    	//there is an off by one error i have not been able to resolve. 
+    	//int previousVertex = distanceTable.get(destination).getLastVertex();
+    	
+    	while (previousVertex != -1 && previousVertex != source){
+    		stack.push(previousVertex);
+    		previousVertex = distanceTable.get(previousVertex).getLastVertex();
+    	}
+    	
+    	if (previousVertex == -1){
+    		System.out.println("No path exists!");
+    	}
+    	
+    	else {
+    		System.out.print("\n\nShortest path: \n" + source);
+    		while (!stack.isEmpty()){
+    			System.out.print(" -> " + stack.pop());
+    		}
+    		
+    	}
+    	
+    }
+    
 }

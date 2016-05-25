@@ -279,7 +279,7 @@ public class Main {
 //			System.out.println(test_n[i]); 
 		
 		//Depth First Print
-		System.out.println("A path out of the Maze: ");
+		System.out.println("Default path out of the Maze: ");
 		MazeGraph.depthFirstPrint(graph, 1);
 		
 	} // main
