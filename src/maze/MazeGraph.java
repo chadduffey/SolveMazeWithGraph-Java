@@ -1,5 +1,14 @@
 package maze;
 
+/**
+* <h1>Variation on the Standard Graph structure for solving Maze's</h1>
+* Create graph object that can be used to solve complex maze files of any size
+*
+* @author  Chad Duffey
+* @version 1.0
+* @since   2016-05-24
+*/
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,6 +34,12 @@ public class MazeGraph {
         adj_matrix = new int[verticies + 1][verticies + 1];
     }
  
+    /**
+     * Create edge between two vertices
+     * @param - int, vertex to
+     * @param - int, vertex from
+     * @param - int, edge
+     **/ 
     public void makeEdge(int to, int from, int edge) 
     {
         try 
@@ -39,6 +54,12 @@ public class MazeGraph {
         }
     }
  
+    /**
+     * Determine if an edge exists between two vertices
+     * @param - int, vertex to
+     * @param - int, vertex from
+     * @return 1 if edge exists, 0 otherwise
+     **/ 
     public int getEdge(int to, int from) 
     {
         try 
@@ -52,6 +73,11 @@ public class MazeGraph {
         return -1;
     }
 	
+    /**
+     * Print out the information about all edges in the graph
+     * @return
+     *   (prints to console)
+     **/ 
     public static void printAllEdges()
     {
     	for (int i = 0; i <= verticies; i++) //for every vertex
@@ -69,6 +95,11 @@ public class MazeGraph {
     	}
     }
     
+    /**
+     * Determine number of vertices in this Graph.
+     * @param - MazeGraph, graph to search
+     * @param - int, The starting place for the search
+     **/ 
     public static void depthFirstPrint(MazeGraph g, int start)
     {
        Integer[ ] marked = new Integer[verticies + 1];
@@ -79,6 +110,14 @@ public class MazeGraph {
        
     }
     
+    /**
+     * Perform a depth first search of the Graph.
+     * @param - MazeGraph, graph object to search
+     * @param - int, the vertex to search from
+     * @param - int[], the binary array to show which verticies have already been searched
+     * @return
+     *   (print search path to console)
+     **/ 
     public static void depthFirstRecurse(MazeGraph g, int v, Integer[ ] marked)
     {
     	
@@ -130,6 +169,12 @@ public class MazeGraph {
        return verticies;
     }
     
+    /**
+     * Return the neighbors of a vertex.
+     * @param - vertex to work with
+     * @return
+     *   int array of neighbors to that vertex
+     **/ 
     public int[] neighbors(int vertex)
     {
     	int[] nResult;
@@ -157,6 +202,13 @@ public class MazeGraph {
     	return nResult;
     }
     
+    /**
+     * Determine adjacent vertices.
+     * Similar to neighbors, different return type and approach
+     * @param - the vertex to work with
+     * @return
+     *   the adjacent vertices in a list
+     **/ 
     public List<Integer> getAdjacentVerticies(int v){
     	
     	List<Integer> adjacentVerticiesList = new ArrayList<>();
@@ -173,6 +225,9 @@ public class MazeGraph {
     	
     }
     
+    /**
+     * Class Object for Distances between vertices.
+     **/ 
     public static class DistanceInfo {
     	
     	private int distance;
@@ -201,6 +256,13 @@ public class MazeGraph {
     	}
     }
     
+    /**
+     * Build a table of distances between vertices.
+     * @param - Graph, the graph to work with
+     * @param - int, the start of the search path
+     * @return
+     *   a map of distances between vertices in the graph
+     **/ 
     public static Map<Integer, DistanceInfo> buildDistanceTable(MazeGraph graph, int source)
     {
     	Map<Integer, DistanceInfo> distanceTable = new HashMap<>();
@@ -236,6 +298,14 @@ public class MazeGraph {
     	return distanceTable;
     }
     
+    /**
+     * Determine the shortest path from start to finish in a graph.
+     * @param - Graph, the Graph to work with
+     * @param - int, the source vertex of the search
+     * @param - int, the destination vertex
+     * @return
+     *   (prints a list to console, no return)
+     **/ 
     public static void shortestPath(MazeGraph graph, int source, int destination)
     {
     	Map<Integer, DistanceInfo> distanceTable = buildDistanceTable(graph, source);

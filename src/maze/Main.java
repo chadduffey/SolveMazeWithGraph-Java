@@ -1,5 +1,17 @@
 package maze;
 
+/**
+* <h1>Client to test Maze Files!</h1>
+* This implementation tests the MazeGraph Class
+* It is designed to solve any Maze
+* Maze01, and Maze02 have been tested
+* both are included with this package by default
+*
+* @author  Chad Duffey
+* @version 1.0
+* @since   2016-05-26
+*/
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -270,13 +282,6 @@ public class Main {
 		System.out.println("\nPrinting all Edges:");
 		MazeGraph.printAllEdges();
 		System.out.println();
-		
-		//Test neighbors.
-		//take out of final.
-		
-//		int[] test_n = graph.neighbors(15);
-//		for (int i = 0; i < test_n.length; i++)
-//			System.out.println(test_n[i]); 
 		
 		//Depth First Print
 		System.out.println("Default path out of the Maze: ");

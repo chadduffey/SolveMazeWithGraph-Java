@@ -1,5 +1,16 @@
 package maze;
 
+/**
+* <h1>Square Object for converting Maze to Graph</h1>
+* A single square object will be created for every character in a map file
+* this way, we can work out exactly what is around each character and how it
+* fits into the overall picture programmatically
+*
+* @author  Chad Duffey
+* @version 1.0
+* @since   2016-05-24
+*/
+
 public class SingleSquare {
 
 	//we are going to map every index of the map into this structure
