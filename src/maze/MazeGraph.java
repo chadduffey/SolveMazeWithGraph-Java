@@ -36,9 +36,9 @@ public class MazeGraph {
  
     /**
      * Create edge between two vertices
-     * @param - int, vertex to
-     * @param - int, vertex from
-     * @param - int, edge
+     * @param - to	int vertex to
+     * @param - from	 int vertex from
+     * @param - edge	int edge
      **/ 
     public void makeEdge(int to, int from, int edge) 
     {
@@ -56,8 +56,8 @@ public class MazeGraph {
  
     /**
      * Determine if an edge exists between two vertices
-     * @param - int, vertex to
-     * @param - int, vertex from
+     * @param - to	int vertex to
+     * @param - from	int vertex from
      * @return 1 if edge exists, 0 otherwise
      **/ 
     public int getEdge(int to, int from) 
